@@ -44,7 +44,8 @@ jobs:
           images: ${{ env.REP }}
           tag-semver: |
             {{version}}
-
+      - name: Run binaries
+        run: make build
       - name: Build and push - Docker/ECR
         id: docker_build
         uses: docker/build-push-action@v2
