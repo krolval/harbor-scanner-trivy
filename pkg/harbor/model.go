@@ -131,11 +131,6 @@ type CVSSDetails struct {
 	VectorV3 string  `json:"vector_v3"`
 }
 
-type VendorAttribute struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
-}
-
 // VulnerabilityItem is an item in the vulnerability result returned by vulnerability details API.
 type VulnerabilityItem struct {
 	ID          string   `json:"id"`
@@ -147,11 +142,10 @@ type VulnerabilityItem struct {
 	Links       []string `json:"links"`
 	Layer       *Layer   `json:"layer"` // Not defined by Scanners API
 	// Deprecated use VendorAttributes instead
-	CVSS              map[string]CVSSInfo    `json:"cvss,omitempty"` // Not defined by Scanners API
-	PreferredCVSS     *CVSSDetails           `json:"preferred_cvss,omitempty"`
-	CweIDs            []string               `json:"cwe_ids,omitempty"`
-	VendorAttributes  []VendorAttribute      `json:"vendor_attributes,omitempty"`
-	VendorAttributes2 map[string]interface{} `json:"vendor_attributes2,omitempty"`
+	CVSS             map[string]CVSSInfo    `json:"cvss,omitempty"` // Not defined by Scanners API
+	PreferredCVSS    *CVSSDetails           `json:"preferred_cvss,omitempty"`
+	CweIDs           []string               `json:"cwe_ids,omitempty"`
+	VendorAttributes map[string]interface{} `json:"vendor_attributes,omitempty"`
 }
 
 type ScannerAdapterMetadata struct {

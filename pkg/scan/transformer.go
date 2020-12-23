@@ -1,7 +1,6 @@
 package scan
 
 import (
-	"encoding/json"
 	"time"
 
 	"github.com/aquasecurity/harbor-scanner-trivy/pkg/etc"
@@ -45,22 +44,18 @@ func (t *transformer) Transform(artifact harbor.Artifact, source trivy.ScanRepor
 
 	for i, v := range source.Vulnerabilities {
 		vulnerabilities[i] = harbor.VulnerabilityItem{
-			ID:            v.VulnerabilityID,
-			Pkg:           v.PkgName,
-			Version:       v.InstalledVersion,
-			FixVersion:    v.FixedVersion,
-			Severity:      t.toHarborSeverity(v.Severity),
-			Description:   v.Description,
-			Links:         t.toLinks(v.References),
-			Layer:         t.toHarborLayer(v.Layer),
-			CVSS:          t.toHarborCVSS(v.CVSS),
-			PreferredCVSS: t.toHarborPreferredCVSS(v.CVSS),
-			CweIDs:        v.CweIDs,
-			// TODO Decide which format of vendor attributes is preferred
+			ID:               v.VulnerabilityID,
+			Pkg:              v.PkgName,
+			Version:          v.InstalledVersion,
+			FixVersion:       v.FixedVersion,
+			Severity:         t.toHarborSeverity(v.Severity),
+			Description:      v.Description,
+			Links:            t.toLinks(v.References),
+			Layer:            t.toHarborLayer(v.Layer),
+			CVSS:             t.toHarborCVSS(v.CVSS),
+			PreferredCVSS:    t.toHarborPreferredCVSS(v.CVSS),
+			CweIDs:           v.CweIDs,
 			VendorAttributes: t.toVendorAttributes(v.CVSS),
-			VendorAttributes2: map[string]interface{}{
-				"CVSS": v.CVSS,
-			},
 		}
 	}
 
@@ -140,17 +135,12 @@ func (t *transformer) toHarborPreferredCVSS(trivyCVSS map[string]trivy.CVSSInfo)
 	return nil
 }
 
-func (t *transformer) toVendorAttributes(info map[string]trivy.CVSSInfo) []harbor.VendorAttribute {
-	b, err := json.Marshal(info)
-	if err != nil {
-		return nil
+func (t *transformer) toVendorAttributes(info map[string]trivy.CVSSInfo) map[string]interface{} {
+	attributes := make(map[string]interface{})
+	if len(info) > 0 {
+		attributes["CVSS"] = info
 	}
-	return []harbor.VendorAttribute{
-		{
-			Key:   "CVSS",
-			Value: string(b),
-		},
-	}
+	return attributes
 }
 
 func (t *transformer) toHighestSeverity(vlns []harbor.VulnerabilityItem) (highest harbor.Severity) {
