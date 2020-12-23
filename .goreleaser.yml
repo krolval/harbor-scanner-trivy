@@ -28,8 +28,8 @@ changelog:
       - '^release'
 dockers:
   - image_templates:
-      - "docker.io/aquasec/harbor-scanner-trivy:{{ .Version }}"
-      - "public.ecr.aws/aquasecurity/harbor-scanner-trivy:{{ .Version }}"
+      - "docker.io/krol/harbor-scanner-trivy:{{ .Version }}"
+      - "public.ecr.aws/v4f3f9r2/harbor-scanner-trivy:{{ .Version }}"
     binaries:
       - scanner-trivy
     build_flag_templates:
