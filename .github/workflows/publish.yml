@@ -5,7 +5,7 @@ on:
     tags:
       - "v*"
 env:
-  ALIAS: aquasecurity
+  ALIAS: v4f3f9r2
   REP: harbor-scanner-trivy
 jobs:
   publish:
