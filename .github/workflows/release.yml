@@ -46,3 +46,4 @@ jobs:
         if: ${{ always() }}
         run: |
           docker logout docker.io
+          docker logout public.ecr.aws
